@@ -84,3 +84,15 @@ class ConversationDetailView(APIView):
         conversation = get_object_or_404(Conversation, id=id)
         serializer = ConversationSerializer(conversation)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ConversationListView(APIView):
+    def get(self, request):
+        # Recupera todas as conversas do banco de dados
+        conversations = Conversation.objects.all()
+        
+        # Serializa as conversas
+        serializer = ConversationSerializer(conversations, many=True)
+        
+        # Retorna a resposta com as conversas serializadas
+        return Response(serializer.data, status=status.HTTP_200_OK)
