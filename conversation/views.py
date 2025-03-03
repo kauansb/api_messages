@@ -56,7 +56,6 @@ class WebhookView(APIView):
         if timestamp_parsed is None:
             return Response({"error": "Invalid timestamp format."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Salva a mensagem recebida no banco de dados
         message = Message.objects.create(
             id=message_id,
             conversation=conversation,
@@ -76,7 +75,7 @@ class WebhookView(APIView):
         if isinstance(timestamp, str):
             parsed_timestamp = parse_datetime(timestamp)
             return parsed_timestamp if parsed_timestamp else None
-        return datetime.now()  # Se não houver timestamp, usa a hora atual
+        return datetime.now()
 
 
 class ConversationDetailView(APIView):
