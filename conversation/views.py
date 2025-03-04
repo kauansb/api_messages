@@ -1,4 +1,3 @@
-from datetime import datetime
 import uuid
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
