@@ -19,3 +19,6 @@ class Conversation(models.Model):
 
     def __str__(self):
         return f"Conversation {self.id} - {self.status}"
+
+    class Meta:
+        ordering = ['-updated_at']

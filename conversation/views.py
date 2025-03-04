@@ -1,5 +1,6 @@
 from datetime import datetime
 import uuid
+from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -34,6 +35,13 @@ class WebhookView(APIView):
         conversation, created = Conversation.objects.get_or_create(id=conversation_id)
         return Response({"message": "Conversation created.", "id": conversation.id}, status=status.HTTP_201_CREATED)
 
+    def handle_new_conversation(self, data):
+        conversation_id = data.get("id") or str(uuid.uuid4())
+        conversation, created = Conversation.objects.get_or_create(id=conversation_id, defaults={"status": "OPEN"})
+
+        status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK # Se a conversa já existir, não recriamos
+        return Response({"message": "Conversation created.", "id": conversation.id}, status=status_code)
+
     def handle_new_message(self, data):
         conversation_id = data.get("conversation_id")
         message_id = data.get("id") or str(uuid.uuid4())
@@ -41,7 +49,7 @@ class WebhookView(APIView):
         content = data.get("content")
         timestamp = data.get("timestamp")
 
-        if not conversation_id or not content:
+        if not conversation_id or not content or direction not in ["SENT", "RECEIVED"]:
             return Response({"error": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
 
         conversation = get_object_or_404(Conversation, id=conversation_id)
@@ -75,16 +83,21 @@ class WebhookView(APIView):
     def validate_timestamp(self, timestamp):
         if isinstance(timestamp, str):
             parsed_timestamp = parse_datetime(timestamp)
-            return parsed_timestamp if parsed_timestamp else None
-        return datetime.now()
+            if parsed_timestamp is None:
+                return None  # None explicito para tratar na view
+            return parsed_timestamp
+        return timezone.now()  # Retorna a hora correta do servidor
 
 
 class ConversationDetailView(RetrieveAPIView):
-    queryset = Conversation.objects.all()
+    queryset = Conversation.objects.prefetch_related("messages") # Prefetch para evitar N+1(Evita múltiplas queries ao carregar conversas e mensagens associadas.)
     serializer_class = ConversationSerializer
     lookup_field = 'id' # Permitir busca por id
 
 
 class ConversationListView(ListAPIView):
-    queryset = Conversation.objects.all()
+    queryset = Conversation.objects.prefetch_related("messages")
     serializer_class = ConversationSerializer
+
+    #def get_queryset(self):
+    #    return self.queryset.filter(status="OPEN")
