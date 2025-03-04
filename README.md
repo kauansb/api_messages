@@ -140,21 +140,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-
-## 📌 Entrega e Requisitos
-
-Após concluir o desafio, envie o link do repositório para o e-mail tecnologia@realmate.com.br com seu nome e número do WhatsApp informados no e-mail.
-
 ## 📚 Referências
 
 - [Django Rest Framework](https://www.django-rest-framework.org/)
 - [Django](https://www.djangoproject.com/)
 - [Poetry](https://python-poetry.org/)
-
-## 📧 Dúvidas
-
-Caso tenha dúvidas sobre o desafio, entre em contato com nossa equipe de tecnologia no e-mail tecnologia@realmate.com.br.
-
-Boa sorte! 🚀
-
-_Equipe Realmate_
