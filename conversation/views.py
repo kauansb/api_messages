@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 
 from .models import Conversation
 from message.models import Message
@@ -81,18 +82,15 @@ class WebhookView(APIView):
 class ConversationDetailView(APIView):
 
     def get(self, request, id):
-        conversation = get_object_or_404(Conversation, id=id)
-        serializer = ConversationSerializer(conversation)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            conversation = get_object_or_404(Conversation, id=id)
+            serializer = ConversationSerializer(conversation)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class ConversationListView(APIView):
-    def get(self, request):
-        # Recupera todas as conversas do banco de dados
-        conversations = Conversation.objects.all()
-        
-        # Serializa as conversas
-        serializer = ConversationSerializer(conversations, many=True)
-        
-        # Retorna a resposta com as conversas serializadas
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class ConversationListView(ListAPIView):
+    """Lista todas as conversas"""
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
