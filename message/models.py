@@ -11,9 +11,9 @@ class Message(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
-    direction = models.CharField(max_length=10, choices=MESSAGE_TYPES)
+    direction = models.CharField(max_length=8, choices=MESSAGE_TYPES)
     content = models.TextField()
     timestamp = models.DateTimeField()
 
     def __str__(self):
-        return f"Message {self.id} ({self.direction}) - {self.content}"
+        return f"Message {self.id} ({self.direction})"

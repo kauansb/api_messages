@@ -8,7 +8,7 @@ class ConversationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Conversation
-        fields = ['id', 'status', 'created_at', 'messages']
+        fields = ['id', 'status', 'created_at', 'updated_at', 'messages']
         read_only_fields = ['id', 'created_at']
         #Pode gerar consultas SQL extras e impactar a performance em grandes volumes de dados.
         #depth = 1  # Mensagens aninhadas automaticamente
