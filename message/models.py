@@ -17,6 +17,6 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message {self.id} ({self.direction})"
-    
+
     class Meta:
-        ordering = ['timestamp']  # Exibir mensagens na ordem em que foram enviadas
+        ordering = ['timestamp']

@@ -29,10 +29,6 @@ class WebhookView(APIView):
 
         return Response({"error": "Invalid event type."}, status=status.HTTP_400_BAD_REQUEST)
 
-    def handle_new_conversation(self, data):
-        conversation_id = data.get("id") or str(uuid.uuid4())
-        conversation, created = Conversation.objects.get_or_create(id=conversation_id)
-        return Response({"message": "Conversation created.", "id": conversation.id}, status=status.HTTP_201_CREATED)
 
     def handle_new_conversation(self, data):
         conversation_id = data.get("id") or str(uuid.uuid4())
