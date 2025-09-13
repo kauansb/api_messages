@@ -1,5 +1,3 @@
-# realmate-challenge
-
 ## Introdução
 
 O objetivo deste desafio é avaliar seus conhecimentos em **APIs** e **Webhooks**, além da sua capacidade de aprender rapidamente e implementar soluções eficientes, usando frameworks renomados como **Django** e **Django Rest Framework (DRF)**.
@@ -95,10 +93,6 @@ Os eventos virão no seguinte formato:
 - O ID da mensagem e o ID da conversa devem ser únicos
 - O sistema deve lidar com erros sem retornar HTTP 500
 
-## 🔥 Bônus (Opcional)
-
-Se quiser ir além e demonstrar sua capacidade de aprendizado e desenvolvimento rápido, você pode implementar um frontend simples para visualizar as conversas e mensagens.
-
 ## 🚀 Tecnologias e Ferramentas
 
 - Django
@@ -124,7 +118,7 @@ pip install poetry
 2.	Instale as dependências do projeto utilizando o Poetry:
 
 ```bash
-cd realmate-challenge
+cd api_messages
 poetry install
 ```
 
